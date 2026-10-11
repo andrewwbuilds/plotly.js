@@ -500,6 +500,22 @@ describe('heatmap calc', function() {
         ]);
     });
 
+    it('should connect gaps that are hundreds of cells deep', () => {
+        // Only column 0 holds data, so the gap is 299 cells deep.
+        const z = [];
+        const filled = [];
+        for (let i = 0; i < 5; i++) {
+            const row = [1];
+            for (let j = 1; j < 300; j++) row.push(null);
+            z.push(row);
+            filled.push(row.map(() => 1));
+        }
+
+        const out = _calc({ z, connectgaps: true });
+
+        expect(out.z).toEqual(filled);
+    });
+
     it('should fill in bricks if x/y not given (typed array case)', function() {
         var out = _calc({
             z: [

@@ -67,12 +67,16 @@ module.exports = function findEmpties(z) {
             i = thisPt[0];
             j = thisPt[1];
 
-            neighborCount = ((neighborHash[[i - 1, j]] || blank)[2] +
+            const neighborSum =
+                (neighborHash[[i - 1, j]] || blank)[2] +
                 (neighborHash[[i + 1, j]] || blank)[2] +
                 (neighborHash[[i, j - 1]] || blank)[2] +
-                (neighborHash[[i, j + 1]] || blank)[2]) / 20;
+                (neighborHash[[i, j + 1]] || blank)[2];
 
-            if(neighborCount) {
+            if (neighborSum) {
+                // neighborSum / 20 can underflow to 0 about 250 cells away from data.
+                // Keep the count positive so that cells farther away still find this cell.
+                neighborCount = Math.max(neighborSum / 20, Number.MIN_VALUE);
                 newNeighborHash[thisPt] = [i, j, neighborCount];
                 noNeighborList.splice(p, 1);
                 foundNewNeighbors = true;
