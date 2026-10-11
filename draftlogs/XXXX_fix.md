@@ -1,0 +1,1 @@
+- Fix an error in `contour` traces, and in `heatmap` and `surface` traces with `connectgaps`, when a gap in `z` reaches about 250 cells from the nearest data [[#XXXX](https://github.com/plotly/plotly.js/pull/XXXX)]
